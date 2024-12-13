@@ -57,7 +57,8 @@ Description=System Resource Monitoring
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /usr/local/bin/monitor.py
+Environment="WEBHOOK_URL=https://hooks.slack.com/services/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"
+ExecStart=/usr/bin/python3 /usr/local/bin/monitor.py --webhook-url $WEBHOOK_URL
 Restart=always
 RestartSec=10
 StandardOutput=journal
