@@ -16,7 +16,16 @@ output "region" {
   value       = var.region
 }
 
+# output "aws_availability_zones" {
+#    description = "Value"
+#    value = data.aws_availability_zones.*
+# } 
+
 output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = module.eks.cluster_name
+}
+
+output "loadbalancer_dns_name" {
+  value = data.kubernetes_service.logstashUrl.status[0].load_balancer[0].ingress[0]
 }

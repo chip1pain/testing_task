@@ -29,7 +29,7 @@ module "vpc" {
 
   name = "education-vpc"
 
-  cidr = "10.0.0.0/16"
+  cidr = var.vpc_subnet
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
 
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
@@ -76,7 +76,7 @@ module "eks" {
     one = {
       name = "node-group-1"
 
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
 
       min_size     = 1
       max_size     = 3
@@ -86,7 +86,7 @@ module "eks" {
     two = {
       name = "node-group-2"
 
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
 
       min_size     = 1
       max_size     = 2
@@ -111,3 +111,4 @@ module "irsa-ebs-csi" {
   role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
 }
+
