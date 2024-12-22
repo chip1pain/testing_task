@@ -14,3 +14,15 @@ variable "vpc_subnet" {
 }
 
 
+variable "private_key_path" {
+  description = "/Users/red/nginx/nginx_key"
+  type        = string
+  default     = "~/nginx/nginx_key"
+}
+
+
+variable "python_script" {
+  description = "python_script"
+  type        = string
+  default     = "/Users/red/workspace/testing_task/python_resource_monitor"
+}

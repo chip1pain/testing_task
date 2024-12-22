@@ -225,15 +225,7 @@ resource "helm_release" "logstash" {
   }
   set {
     name  = "persistence.enabled"
-    value = "true"
-  }
-  set {
-    name  = "volumeClaimTemplate.storageClassName"
-    value = "gp2"
-  }
-  set {
-    name  = "volumeClaimTemplate.resources.requests.storage"
-    value = "10Gi"
+    value = "false"
   }
   set {
     name  = "service.type"

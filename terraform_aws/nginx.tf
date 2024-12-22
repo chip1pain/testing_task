@@ -5,6 +5,7 @@ resource "aws_key_pair" "key_pair" {
   public_key = file("~/nginx/nginx_key.pub")  # Путь к вашему публичному ключу
 }
 
+
 # Создаем Security Group для Nginx и Filebeat
 resource "aws_security_group" "nginx_sg" {
   name        = "nginx-sg"
