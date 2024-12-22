@@ -152,20 +152,10 @@ input {
 filter {
   grok {
     match => {
-      "message" => "%%{IP:client_ip} - - \\\[%%{HTTPDATE:timestamp}\\\] \"%%{WORD:method} %%{URIPATH:request} HTTP/%%{NUMBER:http_version}\" %%{NUMBER:response_code} %%{NUMBER:bytes_sent} \"-\" \"-\""
+      "message" => "%%{IPV4:client_ip} - %%{DATA:remote_user} \[%%{HTTPDATE:timestamp}\] \"%%{WORD:request_method} %%{URIPATH:request_path} HTTP/%%{NUMBER:http_version}\" %%{NUMBER:response_code} %%{NUMBER:bytes_sent} \"%%{DATA:referrer}\" \"%%{DATA:user_agent}\""
     }
   }
-
-  date {
-    match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
-    target => "@timestamp"
-  }
-
-  mutate {
-    remove_field => ["timestamp"] # Удаляем временное поле, если больше не нужно
-  }
 }
-
 output {
   elasticsearch {
     hosts => ["https://elasticsearch-master:9200"]
