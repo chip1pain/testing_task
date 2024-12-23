@@ -49,7 +49,8 @@ resource "kubernetes_service" "prometheus_pushgateway_external" {
     }
 
     selector = {
-      app = "prometheus-pushgateway"  # Убедитесь, что это соответствует метке на pod'ах Pushgateway
+        "app.kubernetes.io/instance" = "prometheus"
+        "app.kubernetes.io/name" = "prometheus-pushgateway"
     }
 
   }

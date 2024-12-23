@@ -57,8 +57,8 @@ resource "aws_instance" "nginx_filebeat" {
   # Устанавливаем Nginx и Filebeat через userdata
   user_data = <<-EOF
               #!/bin/bash
-              apt-get update
-              apt-get install -y nginx apache2-utils
+              apt update && DEBIAN_FRONTEND=noninteractive apt install -y nginx apache2-utils  python3-pip
+              pip3 install psutil requests 
               systemctl start nginx
               systemctl enable nginx
 

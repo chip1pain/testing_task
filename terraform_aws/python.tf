@@ -3,7 +3,7 @@ data "kubernetes_service" "prometheus_pushgateway_external" {
     name      = "prometheus-pushgateway-external"
     namespace = "monitoring"
   }
-  depends_on = [module.eks, helm_release.prometheus]
+  depends_on = [module.eks, helm_release.prometheus, kubernetes_service.prometheus_pushgateway_external]
 }
 
 output "prometheus_pushgateway_external_lb" {
@@ -14,7 +14,7 @@ resource "null_resource" "scp_python_script" {
 
 provisioner "file" {
   source      = var.python_script  # Локальный путь к папке
-  destination = "/home/ubuntu/python_resource_monitor"  # Путь на удаленной машине
+  destination = "/home/ubuntu/"  # Путь на удаленной машине
   connection {
     type        = "ssh"
     user        = "ubuntu"
@@ -27,8 +27,7 @@ provisioner "file" {
   provisioner "remote-exec" {
     inline = [
       "echo 'Installing dependencies for Python script...'",
-      "sudo bash /home/ubuntu/python_resource_monitor/prepeare.sh",
-      "python3 /home/ubuntu/python_resource_monitor/monitor.py --pushgateway-url http://${data.kubernetes_service.prometheus_pushgateway_external.status[0].load_balancer[0].ingress[0].hostname}:9091 &"
+      "sudo bash /home/ubuntu/python_resource_monitor/prepeare.sh --pushgateway-url  http://${data.kubernetes_service.prometheus_pushgateway_external.status[0].load_balancer[0].ingress[0].hostname}:9091"
     ]
 
     connection {

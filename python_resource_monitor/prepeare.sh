@@ -1,16 +1,32 @@
 #!/bin/bash
 
+if [ "$#" -lt 2 ]; then
+  echo "Error: Webhook URL or Pushgateway URL must be provided as the first argument."
+  echo "Usage: $0 <WEBHOOK_URL_OR_PUSHGATEWAY_URL> <--pushgateway-url> <--webhook-url>"
+  exit 1
+fi
+
+if [ "$1" == "--pushgateway-url" ]; then
+  SERVICE_ENV="PUSHGATEWAY_URL"
+  SERVICE_EXEC="--pushgateway-url"
+elif [ "$1" == "--webhook-url" ]; then
+  SERVICE_ENV="WEBHOOK_URL"
+  SERVICE_EXEC="--webhook-url"
+else
+  echo "Error: Invalid flag. Use '--pushgateway-url' or '--webhook-url'."
+  exit 1
+fi
+
 # Проверка и установка Python и pip3
 echo "Checking for Python3 and pip3..."
 if ! command -v python3 &>/dev/null; then
   echo "Python3 is not installed. Installing..."
-  sudo apt-get update
-  sudo apt-get install -y python3
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3 &>/dev/null
 fi
 
 if ! command -v pip3 &>/dev/null; then
   echo "pip3 is not installed. Installing..."
-  sudo apt-get install -y python3-pip
+  sudo apt-get install -y python3-pip &>/dev/null
 fi
 
 # Установка необходимых Python модулей
@@ -33,8 +49,8 @@ Description=System Resource Monitoring
 After=network.target
 
 [Service]
-Environment="WEBHOOK_URL=${1}"
-ExecStart=/usr/bin/python3 /usr/local/bin/monitor.py --webhook-url \$WEBHOOK_URL
+Environment="${SERVICE_ENV}=$2"
+ExecStart=/usr/bin/python3 /usr/local/bin/monitor.py ${SERVICE_EXEC} \$${SERVICE_ENV}
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -46,7 +62,7 @@ EOF
 
 # Копирование скрипта monitor.py и установка прав
 echo "Copying the monitor script..."
-sudo cp -r ../python_resource_monitor/monitor.py /usr/local/bin/monitor.py
+sudo cp -r /home/ubuntu/python_resource_monitor/monitor.py /usr/local/bin/monitor.py
 sudo chmod +x /usr/local/bin/monitor.py
 
 # Перезагрузка systemd и запуск сервиса
@@ -54,4 +70,3 @@ echo "Reloading systemd and starting the service..."
 sudo systemctl daemon-reload
 sudo systemctl enable resource_monitor.service
 sudo systemctl start resource_monitor.service
-
