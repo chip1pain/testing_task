@@ -4,20 +4,44 @@
 This project uses Terraform to deploy AWS RDS (PostgreSQL) in a secure VPC environment. The entire infrastructure is organized into modules for better scalability and reusability.
 
 ## Project Structure
-```
-terraform/
-├── modules/
-│   ├── vpc/
-│   ├── ec2/
-│   ├── rds/
-│   ├── ecs/
-│   ├── eks/
-│   ├── alb/
+```├── README.md
+├── check_task.sh
 ├── main.tf
-├── variables.tf
+├── modules
+│   ├── alb
+│   │   ├── main.tf
+│   │   ├── output.tf
+│   │   └── variables.tf
+│   ├── ec2
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── ecs
+│   │   ├── main.tf
+│   │   ├── output.tf
+│   │   └── variables.tf
+│   ├── iam
+│   │   ├── main.tf
+│   │   ├── output.tf
+│   │   └── variables.tf
+│   ├── rds
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── sg
+│   │   ├── main.tf
+│   │   ├── output.tf
+│   │   └── variables.tf
+│   ├── ssh
+│   │   ├── main.tf
+│   │   ├── output.tf
+│   │   └── variables.tf
+│   └── vpc
+│       ├── main.tf
+│       ├── outputs.tf
+│       └── variables.tf
 ├── outputs.tf
-├── terraform.tfvars
-└── README.md
+└── variables.tf
 ```
 
 ## Infrastructure Deployment
