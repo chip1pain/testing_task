@@ -96,12 +96,21 @@ ssh -i ~/nginx/private_key.pem ubuntu@<public_ip>
 ## Managing ECS
 ### List Clusters
 ```sh
-aws ecs list-clusters --query "clusterArns" --output table
+aws ecs list-clusters
 ```
 
 ### Retrieve Service Information
 ```sh
 aws ecs describe-services --cluster my-ecs-cluster --services web-service
+```
+### List Tasks
+```sh
+aws ecs list-tasks --cluster my-ecs-cluster --query "taskArns" --output table
+```
+
+### Describe Tasks
+```sh
+aws ecs describe-tasks --cluster my-ecs-cluster --tasks <taskArns>
 ```
 
 ### Update Service
