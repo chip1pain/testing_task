@@ -47,6 +47,9 @@ module "rds" {
   db_subnet_group_name = "my-db-subnet-group"
   subnet_ids           = module.vpc.private_subnet_ids # Это будет список ID приватных подсетей
   security_group_id    = module.sg.rds_sg_id
+  db_name              = "mbdb"
+  db_username          = "pgadmin"
+  db_password          = var.db_password # Лучше передавать как переменную
 }
 
 module "alb" {

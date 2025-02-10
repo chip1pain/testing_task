@@ -20,6 +20,16 @@ output "rds_db_endpoint" {
   value = module.rds.db_endpoint
 }
 
+output "rds_db_name" {
+  value = module.rds.db_name
+}
+
+output "rds_db_username" {
+  value = module.rds.db_user
+}
+
 output "alb_dns_name" {
   value = module.alb.alb_dns_name
 }
+
+
