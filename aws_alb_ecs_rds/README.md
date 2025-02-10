@@ -3,6 +3,21 @@
 ## Description
 This project uses Terraform to deploy AWS RDS (PostgreSQL) in a secure VPC environment. The entire infrastructure is organized into modules for better scalability and reusability.
 
+
+## Terraform Configuration
+Before running Terraform, create a `terraform.tfvars` file in the root of the project and add:
+
+```hcl
+db_password = "your_password"
+
+Or use an environment variable:
+
+export TF_VAR_db_password="your_password"
+The terraform.tfvars file is included in .gitignore to prevent sensitive data from being committed to the repository.
+```
+
+
+
 ## Project Structure
 ```├── README.md
 ├── check_task.sh
@@ -66,33 +81,6 @@ terraform apply -auto-approve
 terraform output
 ```
 
-## Managing RDS
-### Retrieve Database Information
-```sh
-aws rds describe-db-instances --query "DBInstances[*].{ID:DBInstanceIdentifier, Status:DBInstanceStatus, Endpoint:Endpoint.Address}"
-```
-
-### Create a Database Snapshot
-```sh
-aws rds create-db-snapshot --db-instance-identifier <db-instance-id> --db-snapshot-identifier <snapshot-name>
-```
-
-### Restore from Snapshot
-```sh
-aws rds restore-db-instance-from-db-snapshot --db-instance-identifier <new-db-instance-id> --db-snapshot-identifier <snapshot-name>
-```
-
-## Managing EC2
-### Retrieve Public IP of an Instance
-```sh
-terraform output public_ip
-```
-
-### Connect via SSH
-```sh
-ssh -i ~/nginx/private_key.pem ubuntu@<public_ip>
-```
-
 ## Managing ECS
 ### List Clusters
 ```sh
@@ -148,6 +136,33 @@ aws elbv2 delete-target-group --target-group-arn <target-group-arn>
 ```sh
 terraform destroy -auto-approve
 ```
+# Managing RDS
+### Retrieve Database Information
+```sh
+aws rds describe-db-instances --query "DBInstances[*].{ID:DBInstanceIdentifier, Status:DBInstanceStatus, Endpoint:Endpoint.Address}"
+```
+
+### Create a Database Snapshot
+```sh
+aws rds create-db-snapshot --db-instance-identifier <db-instance-id> --db-snapshot-identifier <snapshot-name>
+```
+
+### Restore from Snapshot
+```sh
+aws rds restore-db-instance-from-db-snapshot --db-instance-identifier <new-db-instance-id> --db-snapshot-identifier <snapshot-name>
+```
+
+## Managing EC2
+### Retrieve Public IP of an Instance
+```sh
+terraform output public_ip
+```
+
+### Connect via SSH
+```sh
+ssh -i ~/nginx/private_key.pem ubuntu@<public_ip>
+```
+
 
 ## AWS CLI Commands Reference
 
