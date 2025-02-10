@@ -108,7 +108,10 @@ aws ecs describe-services --cluster my-ecs-cluster --services web-service
 ```sh
 aws ecs update-service --cluster my-ecs-cluster --service web-service --force-new-deployment --enable-execute-command
 ```
-
+### Exec Service 
+```sh
+aws ecs execute-command --cluster my-ecs-cluster --task <task_id>  --container nginx-container --command "/bin/bash" --interactive
+```
 ## Managing EKS
 ### List EKS Clusters
 ```sh
